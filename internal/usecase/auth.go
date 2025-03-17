@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"crypto/rsa"
 	"errors"
 
 	"github.com/rickyhuang08/gin-project/internal/entity"
@@ -11,17 +10,15 @@ import (
 
 // AuthUsecase handles authentication
 type AuthUsecase struct {
-	UserRepo   *sql.UserRepository
-	JwtHelper  *auth.JWTHelper
-	PrivateKey *rsa.PrivateKey
+	UserRepo  *sql.UserRepository
+	JwtHelper *auth.JWTHelper
 }
 
 // NewAuthUsecase initializes auth usecase
-func NewAuthUsecase(userRepo *sql.UserRepository, jwtHelper *auth.JWTHelper, privateKey *rsa.PrivateKey) *AuthUsecase {
+func NewAuthUsecase(userRepo *sql.UserRepository, jwtHelper *auth.JWTHelper) *AuthUsecase {
 	return &AuthUsecase{
-		UserRepo:   userRepo,
-		JwtHelper:  jwtHelper,
-		PrivateKey: privateKey,
+		UserRepo:  userRepo,
+		JwtHelper: jwtHelper,
 	}
 }
 
@@ -36,7 +33,7 @@ func (uc *AuthUsecase) Login(req entity.LoginRequest) (string, error) {
 		return "", errors.New("invalid credentials")
 	}
 
-	token, err := uc.JwtHelper.GenerateJWT(user.ID, uc.PrivateKey)
+	token, err := uc.JwtHelper.GenerateJWT(user.ID)
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}

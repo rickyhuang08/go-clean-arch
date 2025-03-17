@@ -3,6 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rickyhuang08/gin-project/helpers"
+	"github.com/rickyhuang08/gin-project/pkg/auth"
 )
 
 type MiddlewareModule struct {
@@ -37,7 +38,7 @@ func (m *MiddlewareModule) RegisterGlobalMiddleware(r *gin.Engine) {
 
 // RegisterAuthMiddleware applies to protected routes
 func (m *MiddlewareModule) RegisterAuthMiddleware(r *gin.RouterGroup) error {
-	loadPublicKey, err := LoadPublicKey(m.PublicKeyPath)
+	loadPublicKey, err := auth.LoadPublicKey(m.PublicKeyPath)
 	if err != nil {
 		return err
 	}

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"crypto/rsa"
+	"log"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -9,22 +9,31 @@ import (
 )
 
 type JWTHelper struct {
-	Time helpers.TimeProvider
+	Time       helpers.TimeProvider
+	PrivateKey string
 }
 
-func NewJWTHelper(time helpers.TimeProvider) *JWTHelper {
+func NewJWTHelper(time helpers.TimeProvider, privateKey string) *JWTHelper {
 	return &JWTHelper{
-		Time: time,
+		Time:       time,
+		PrivateKey: privateKey,
 	}
 }
 
 // GenerateJWT creates a signed JWT
-func(m *JWTHelper) GenerateJWT(userID int, privateKey *rsa.PrivateKey) (string, error) {
+func (m *JWTHelper) GenerateJWT(userID int) (string, error) {
+
+	// Initialize usecases
+	rsaPrivateKey, err := LoadPrivateKey(m.PrivateKey)
+
+	if err != nil {
+		log.Fatalf("Failed to load private key: %v", err)
+	}
 	claims := jwt.MapClaims{
 		"sub": userID,
 		"exp": m.Time.Now().Add(time.Hour * 1).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-	return token.SignedString(privateKey)
+	return token.SignedString(rsaPrivateKey)
 }

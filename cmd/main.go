@@ -28,11 +28,8 @@ func startServer() error {
 	// Initialize helper for time abstraction
 	timeProvider := helpers.NewRealTimeProvider()
 
-	// Path to public key for JWT validation
-	publicKeyPath := cfg.Jwt.PublicKey
-
 	// Initialize middleware module
-	mw := middleware.NewMiddlewareModule(timeProvider, publicKeyPath)
+	mw := middleware.NewMiddlewareModule(timeProvider, cfg.Jwt.PublicKey)
 
 	// Apply global middlewares
 	mw.RegisterGlobalMiddleware(router)
@@ -40,14 +37,8 @@ func startServer() error {
 	// Initialize repository
 	userRepo := sql.NewUserRepository()
 
-	// Initialize usecases
-	privateKey, err := middleware.LoadPrivateKey(cfg.Jwt.PrivateKey)
-	if err != nil {
-		log.Fatalf("Failed to load private key: %v", err)
-	}
-
-	jwtHelper := auth.NewJWTHelper(timeProvider)
-	authUC := usecase.NewAuthUsecase(userRepo, jwtHelper, privateKey)
+	jwtHelper := auth.NewJWTHelper(timeProvider, cfg.Jwt.PrivateKey)
+	authUC := usecase.NewAuthUsecase(userRepo, jwtHelper)
 	userUC := usecase.NewUserUsecase(userRepo)
 
 	// Initialize handler
