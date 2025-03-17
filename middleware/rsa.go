@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -35,6 +36,7 @@ func LoadPrivateKey(path string) (*rsa.PrivateKey, error) {
 
 // LoadPublicKey loads the RSA public key
 func LoadPublicKey(path string) (*rsa.PublicKey, error) {
+	fmt.Println("Path :", path)
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err

@@ -14,12 +14,16 @@ type Config struct {
 		Port string `yaml:"port"`
 	} `yaml:"server"`
 	Database struct {
-		Port     int `yaml:"port"`
+		Port     int    `yaml:"port"`
 		User     string `yaml:"user"`
 		Password string `yaml:"password"`
 		Host     string `yaml:"host"`
 		Name     string `yaml:"name"`
 	} `yaml:"database"`
+	Jwt struct {
+		PublicKey  string `yaml:"publickey_path"`
+		PrivateKey string `yaml:"privatekey_path"`
+	} `yaml:"jwt"`
 }
 
 func NewConfig() (*Config, error) {

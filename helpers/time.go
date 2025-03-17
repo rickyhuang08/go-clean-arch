@@ -11,6 +11,11 @@ type TimeProvider interface {
 // RealTimeProvider is the actual implementation
 type RealTimeProvider struct{}
 
+// NewRealTimeProvider creates a new instance of RealTimeProvider
+func NewRealTimeProvider() TimeProvider {
+	return &RealTimeProvider{}
+}
+
 // Now returns the current time
 func (RealTimeProvider) Now() time.Time {
 	return time.Now()

@@ -19,7 +19,7 @@ func NewJWTHelper(time helpers.TimeProvider) *JWTHelper {
 }
 
 // GenerateJWT creates a signed JWT
-func(m *JWTHelper) GenerateJWT(userID string, privateKey *rsa.PrivateKey) (string, error) {
+func(m *JWTHelper) GenerateJWT(userID int, privateKey *rsa.PrivateKey) (string, error) {
 	claims := jwt.MapClaims{
 		"sub": userID,
 		"exp": m.Time.Now().Add(time.Hour * 1).Unix(),

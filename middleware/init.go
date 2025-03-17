@@ -13,6 +13,7 @@ type MiddlewareModule struct {
 func NewMiddlewareModule(time helpers.TimeProvider, publicKeyPath string) *MiddlewareModule {
 	return &MiddlewareModule{
 		Time: time,
+		PublicKeyPath: publicKeyPath,
 	}
 }
 

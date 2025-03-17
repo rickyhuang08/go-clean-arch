@@ -17,6 +17,7 @@
 /go/bin/
 /go/pkg/
 /vendor/
+/config/keys/
 
 # IDE/editor settings
 .vscode/
